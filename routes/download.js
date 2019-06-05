@@ -1,12 +1,12 @@
-var express = require('express');
-var router = express.Router();
-var fs = require('fs');
-var path = require('path');
+const express = require('express');
+const router = express.Router();
+const fs = require('fs');
+const path = require('path');
 
 /* GET home page. */
 router.get('/', function (req, res) {
-    var name = req.query.name;
-    var filepath = path.normalize(__dirname + '/../files/' + name);
+    const name = req.query.name;
+    const filepath = path.normalize(__dirname + '/../files/' + name);
     fs.stat(filepath, function (err, stat) {
         if (err || !stat.isFile()) {
             if (err.code === 'ENOENT') {
@@ -14,8 +14,7 @@ router.get('/', function (req, res) {
             } else {
                 res.status(500);
             }
-            res.send(err);
-            return;
+            return res.send(err);
         }
         res.sendFile(filepath);
     })
