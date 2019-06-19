@@ -52,7 +52,7 @@ router.post("/", async function (req, res) {
             });
             return res.send('File updated!');
         } else {
-            return res.status(403).send('Password is invalid.');
+            return res.status(400).send('Password is invalid.');
         }
     }
 });

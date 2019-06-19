@@ -9,33 +9,41 @@ router.get('/', async function (req, res) {
     const password = req.query.password;
     const version = req.query.version;
 
-    const filepath = path.normalize(__dirname + '/../files/' + name);
-    fs.stat(filepath,  async function (err, stat) {
-        if (err || !stat.isFile()) {
-            if (err.code === 'ENOENT') {
-                res.status(404);
-            } else {
-                res.status(500);
-            }
-            return res.send(err);
-        }
+    if (!name) {
+        return res.status(400).send('No name');
+    }
+
+    if (!password) {
+        return res.status(400).send('No password');
+    }
+    try {
         const filever = await File.count({name: name});
-        if(!version){
-            const filedb = await File.findOne({name: name, ver: filever});
-            if (password === filedb.password) {
-                return res.sendFile(filedb.path);
-            }
-        } else {
-            if (1 <= version && version <= filever) {
-                const filedb = await File.findOne({name: name, ver: version});
-                    if (password === filedb.password) {
+            if(!version){
+                const filedb = await File.findOne({name: name, ver: filever});
+
+                if (password === filedb.password) {
+                    try {
                         return res.sendFile(filedb.path);
-                    } else return res.status(403).send('Invalid password');
-                } else return res.status(403).send('Invalid version');
-            }
+                    } catch  {
+                        return res.status(500).send('Cannot send file');
+                    }
+                } else return res.status(400).send('Invalid password')
 
-
-    })
+        } else {
+            if (version >=1 && version <= filever) {
+                const filedb = await File.findOne({name: name, ver: version});
+                if (password === filedb.password) {
+                    try {
+                        return res.sendFile(filedb.path);
+                    } catch {
+                        return res.status(500).send('Cannot send file');
+                    }
+                } else return res.status(400).send('Invalid password');
+            } else return res.status(400).send('Invalid version');
+        }
+        } catch  {
+            return res.status(500).send('Error in finding file');
+        }
 });
 
 module.exports = router;
