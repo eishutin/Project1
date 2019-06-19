@@ -22,27 +22,19 @@ router.get('/', async function (req, res) {
                 const filedb = await File.findOne({name: name, ver: filever});
 
                 if (password === filedb.password) {
-                    try {
                         return res.sendFile(filedb.path);
-                    } catch  {
-                        return res.status(500).send('Cannot send file');
-                    }
                 } else return res.status(400).send('Invalid password')
 
         } else {
             if (version >=1 && version <= filever) {
                 const filedb = await File.findOne({name: name, ver: version});
                 if (password === filedb.password) {
-                    try {
-                        return res.sendFile(filedb.path);
-                    } catch {
-                        return res.status(500).send('Cannot send file');
-                    }
+                    return res.sendFile(filedb.path);
                 } else return res.status(400).send('Invalid password');
             } else return res.status(400).send('Invalid version');
         }
-        } catch  {
-            return res.status(500).send('Error in finding file');
+        } catch (e) {
+            return res.status(500).send(e);
         }
 });
 
