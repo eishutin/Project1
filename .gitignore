@@ -1,1 +1,3 @@
-./tmp
+/bin/.tmp
+files/*
+!files/.gitkeep
