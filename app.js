@@ -8,6 +8,7 @@ var upload = require('./routes/upload');
 var fileUpload = require('express-fileupload');
 require('./lib/database').init();
 
+
 var app = express();
 
 // view engine setup

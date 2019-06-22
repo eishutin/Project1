@@ -5,12 +5,12 @@ const path = require('path');
 
 router.get('/', async function (req, res) {
     const File = require('../lib/database').File;
-    const name = req.query.name;
+    const name = req.query.id;
     const password = req.query.password;
     const version = req.query.version;
 
     if (!name) {
-        return res.status(400).send('No name');
+        return res.status(400).send('No id');
     }
 
     if (!password) {
@@ -19,7 +19,7 @@ router.get('/', async function (req, res) {
     try {
         const filever = await File.count({name: name});
             if(!version){
-                const filedb = await File.findOne({name: name, ver: filever});
+                const filedb = await File.findOne({name: name, version: filever});
 
                 if (password === filedb.password) {
                         return res.sendFile(filedb.path);
@@ -27,7 +27,7 @@ router.get('/', async function (req, res) {
 
         } else {
             if (version >=1 && version <= filever) {
-                const filedb = await File.findOne({name: name, ver: version});
+                const filedb = await File.findOne({name: name, version: version});
                 if (password === filedb.password) {
                     return res.sendFile(filedb.path);
                 } else return res.status(400).send('Invalid password');
