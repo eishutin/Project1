@@ -7,19 +7,21 @@
   },
   "dependencies": {
     "@types/node": "^12.0.10",
+    "bcrypt": "^3.0.6",
     "busboy": "^0.3.1",
+    "content-type": "latest",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-fileupload": "^1.1.4",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
+    "password-hash": "^1.2.2",
     "pug": "^2.0.3",
     "raw-body": "^2.4.0",
     "sails-mysql": "^1.0.1",
     "uuid": "^3.3.2",
-    "waterline": "^0.13.6",
-    "content-type": "latest"
+    "waterline": "^0.13.6"
   },
   "devDependencies": {
     "sails-disk": "^1.1.2"
